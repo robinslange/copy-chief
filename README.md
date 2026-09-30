@@ -21,7 +21,7 @@ cd copy-chief
 ./install.sh
 ```
 
-This copies the skill to `~/.claude/skills/copy-chief` and the two agents to `~/.claude/agents/`. Restart Claude Code, then:
+This symlinks the skill to `~/.claude/skills/copy-chief` and the two agents into `~/.claude/agents/`, so `git pull` in the checkout updates your install. Restart Claude Code, then:
 
 ```
 /copy-chief path/to/draft.md

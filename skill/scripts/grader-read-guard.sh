@@ -8,7 +8,7 @@ if [ -z "$path" ]; then
   echo "copy-grader: blocked a Read with no file_path" >&2
   exit 2
 fi
-real() { python3 -c 'import os,sys; print(os.path.realpath(sys.argv[1]))' "$1"; }
+real() { python3 -c 'import os,sys; print(os.path.realpath(os.path.expanduser(sys.argv[1])))' "$1"; }
 target=$(real "$path") && checks=$(real "$refs/checks.md") && tells=$(real "$refs/ai-tells.md")
 if [ -z "$target" ] || [ -z "$checks" ] || [ -z "$tells" ]; then
   echo "copy-grader: could not resolve paths (python3 unavailable?); blocking" >&2

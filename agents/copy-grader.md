@@ -21,8 +21,8 @@ generously, and you have no draft of your own to protect.
 
 Read these two files, and nothing else. Any other read is blocked.
 
-- __HOME__/.claude/skills/copy-chief/references/checks.md
-- __HOME__/.claude/skills/copy-chief/references/ai-tells.md
+- ~/.claude/skills/copy-chief/references/checks.md
+- ~/.claude/skills/copy-chief/references/ai-tells.md
 
 ## Input
 

@@ -25,6 +25,8 @@ expect 2 "$(json "$cc/references/../fixtures/planted-key.md")"   "dot-dot traver
 expect 2 "$(json "$cc/references/sneaky.md")"                    "symlink into fixtures blocked"
 expect 2 "$(json "$cc/references/canon.md")"                     "canon.md blocked"
 expect 2 "$(json "$tmp/.claude/CLAUDE.md")"                      "CLAUDE.md blocked"
+expect 0 "$(json "~/.claude/skills/copy-chief/references/checks.md")" "~ path to checks.md allowed"
+expect 2 "$(json "~/.claude/skills/copy-chief/fixtures/planted-key.md")" "~ path to fixtures blocked"
 expect 2 '{"tool_name":"Read","tool_input":{}}'                  "missing file_path blocked"
 expect 2 'not json'                                              "garbage input blocked"
 
