@@ -46,14 +46,14 @@ The cold run is only as cold as its hook. After installing, ask Claude to dispat
 | `skill/fixtures/` | a planted-defect draft with its key, a clean draft, and minimal pairs for the six loudest checks with their measured runs |
 | `agents/` | the `copy-grader` and `copy-source-checker` agent definitions |
 
-Run the tests with:
+Run every test suite with `./test.sh`. CI runs it on Linux and macOS for every push. The suites cover:
 
-```sh
-cd skill
-bash tests/grader-read-guard.test.sh
-bash tests/source-check-guard.test.sh
-python3 -m pytest tests/test_tally.py
-```
+- **The read guard.** The grader can reach the rubric, and nothing else. That includes attempts through `..`, `~`, symlinks, and a symlinked install. It also fails closed when `jq` or `python3` is missing.
+- **The source-check guard.** The source checker's shell allows only fetch flags on `http(s)` URLs, piped into `grep`, `head` or `tail` reading stdin. The tests cover chaining, redirects, `$` and `#` tricks, unquoted globs, `file://`, and every curl flag that writes or reads a local file.
+- **The tally.** Majority rules, even and single run counts, malformed grader output, and a broken or missing run failing the whole tally.
+- **The install.** Symlinks, reruns, stale links, refusing to clobber a real directory, missing dependencies, and an end-to-end check through the installed hooks.
+- **Contracts between files.** The rubric, the tally, the canon, the agents and the fixtures agree. The source checker's own curl templates pass its guard. A fresh tally of the recorded runs reproduces the recorded results.
+- **No private content.** No home directory paths get committed. It also checks for terms listed in an optional, never-pushed `.git/info/private-terms`.
 
 ## Notes
 

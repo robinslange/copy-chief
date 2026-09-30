@@ -50,6 +50,9 @@ def tally(runs):
 
 
 def main(paths):
+    if not paths:
+        print("usage: tally.py run1.md [run2.md ...]", file=sys.stderr)
+        return 1
     texts = []
     for p in paths:
         try:
