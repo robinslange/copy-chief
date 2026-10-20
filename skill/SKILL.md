@@ -23,16 +23,17 @@ reasoning, a file path, or any earlier grade.
 
 The separation matters because the author's knowledge is an instrument with
 its own blind spot. On code, an author's self-review and a cold review found
-disjoint defects (`the-cold-review-and-the-self-review-found-disjoint-defects`),
-and a cold reviewer found fourteen issues a self-review had passed
-(`an-independent-adversarial-subagent-review-catches-build-breakers-a-self-review-misses`).
-That evidence comes from code review. It has not been measured on copy. If you
-grade in-conversation because it seemed faster, the grade is void.
+disjoint defects, and a cold reviewer found fourteen issues a self-review had
+passed. That evidence comes from code review. It has not been measured on
+copy. If you grade in-conversation because it seemed faster, the grade is void.
 
-Dispatch `copy-grader` as a plain subagent: `subagent_type` only, never a
-`name`. A named spawn runs as a teammate, and teammates skip the agent's
-frontmatter hooks: on 2026-09-28 a named copy-grader read the fixture answer
-key while a plain one, same prompt, was blocked.
+Dispatch every grader, including the live test below, as a plain subagent:
+`subagent_type: copy-grader`, never a `name` or team. The hook lives in
+`copy-grader`'s frontmatter, and a named spawn runs as a teammate, which skips
+frontmatter hooks: on 2026-09-28 a named copy-grader read
+`fixtures/planted-key.md` while a plain one, same prompt, was blocked. Paste
+the draft text itself into the prompt: tool prompts are not run through a
+shell, so `$(cat draft.md)` arrives as literal text.
 
 The hook is the guarantee, and only a live test proves it is wired: dispatch
 `copy-grader` the same way you grade with it, with an instruction to read
@@ -40,13 +41,6 @@ The hook is the guarantee, and only a live test proves it is wired: dispatch
 "blocked" message. A missing or
 non-executable script lets reads through, because the harness treats any exit
 code but 2 as non-blocking.
-
-The hook lives in `copy-grader`'s frontmatter, and the harness applies it only
-to a plain subagent dispatch. Dispatch every grader, including the live test,
-with `subagent_type: copy-grader` and no `name` or team. A grader spawned as a
-named teammate reads `fixtures/planted-key.md` unblocked; this was checked live
-on 2026-09-28. Paste the draft text itself into the prompt: tool prompts are
-not run through a shell, so `$(cat draft.md)` arrives as literal text.
 
 ### Three runs, majority per check
 
@@ -137,4 +131,5 @@ apply on top of this gate.
 
 `references/canon.md` is never given to the cold grader. After a report, when
 the user wants the depth behind a finding, find the section whose "Enforced by"
-line names that check id and open the vault notes it routes to.
+line names that check id and give the user that section: the mechanism, and
+the owner it credits.
