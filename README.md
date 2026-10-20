@@ -1,6 +1,6 @@
 # copy-chief
 
-A cold gate for direct-response copy, built as a [Claude Code](https://claude.com/claude-code) skill. It grades drafts instead of writing them.
+A cold gate for direct-response copy, built as a [Claude Code](https://claude.com/claude-code) skill. It grades drafts instead of writing them. Built and maintained by [omit](https://omit.nz).
 
 Give it an ad, landing page, email, carousel, subject line or caption. It returns line-level findings against a binary source gate (Gate 0) and 25 direct-response checks. Each finding is traced to the principle it enforces, drawn from Schwartz, Hopkins, Halbert, Sugarman, Cialdini, Kennedy and others. The verdict is `BLOCKED` or `PASS-WITH-FINDINGS`. You never get a score, because a composite number hides which check failed, and that is the only thing worth knowing.
 
@@ -43,19 +43,15 @@ The cold run is only as cold as its hook. After installing, ask Claude to dispat
 | `skill/references/canon.md` | the ten mechanisms behind the checks, for brief mode and follow-up (never given to the grader) |
 | `skill/scripts/` | read guards for both agents, and the three-run tally |
 | `skill/tests/` | tests for the guards and the tally |
+| `tests/` | tests for the install, cross-file contracts and private content |
 | `skill/fixtures/` | a planted-defect draft with its key, a clean draft, and minimal pairs for the six loudest checks with their measured runs |
 | `agents/` | the `copy-grader` and `copy-source-checker` agent definitions |
 
-Run every test suite with `./test.sh`. CI runs it on Linux and macOS for every push. The suites cover:
+## Tests
 
-- **The read guard.** The grader can reach the rubric, and nothing else. That includes attempts through `..`, `~`, symlinks, and a symlinked install. It also fails closed when `jq` or `python3` is missing.
-- **The source-check guard.** The source checker's shell allows only fetch flags on `http(s)` URLs, piped into `grep`, `head` or `tail` reading stdin. The tests cover chaining, redirects, `$` and `#` tricks, unquoted globs, `file://`, and every curl flag that writes or reads a local file.
-- **The tally.** Majority rules, even and single run counts, malformed grader output, and a broken or missing run failing the whole tally.
-- **The install.** Symlinks, reruns, stale links, refusing to clobber a real directory, missing dependencies, and an end-to-end check through the installed hooks.
-- **Contracts between files.** The rubric, the tally, the canon, the agents and the fixtures agree. The source checker's own curl templates pass its guard. A fresh tally of the recorded runs reproduces the recorded results.
-- **No private content.** No home directory paths get committed. It also checks for terms listed in an optional, never-pushed `.git/info/private-terms`.
+`./test.sh` runs every suite: both guards, the tally, the install, the contracts between files, and a check that nothing private is committed (home directory paths, plus any terms in an optional, never-pushed `.git/info/private-terms`). CI runs it on Linux and macOS for every push. Each case is labelled in its test file.
 
 ## Notes
 
-- The backticked `vault:` slugs in `canon.md` and `checks.md` are the titles of notes in my private notes vault. They aren't links you can follow, but each title states the claim it stands for.
+- The backticked `vault:` slugs in `canon.md` and `checks.md` are the titles of notes in a private notes vault. They aren't links you can follow, but each title states the claim it stands for.
 - The Gate 0 and compliance checks lean toward supplement and health copy (DSHEA, NZ DSR 1985, Canadian NPN, FTC substantiation), because that's what it was built on. The other checks are general.
